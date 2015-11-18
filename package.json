@@ -36,5 +36,8 @@
     "gulp-eslint": "^1.1.0",
     "gulp-mocha": "^2.2.0",
     "yargs": "^3.30.0"
+  },
+  "dependencies": {
+    "slack-robot": "^2.0.8"
   }
 }
