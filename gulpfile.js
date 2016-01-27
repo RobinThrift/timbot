@@ -9,19 +9,13 @@ var gulp   = require('gulp'),
             tests: {
                 unit: ['test/*.spec.js', 'test/**/*.spec.js', 'test/commands/**/*.spec.js']
             }
-        },
-        tests: {
-            reporter: (process.env.IS_CI || process.env.CI) ? 'mocha-junit-reporter' : 'spec',
-            junitOutput: process.env.CIRCLE_TEST_REPORTS
         }
     };
-
 
 var args  = require('yargs')(process.argv)
                 .string('only')
                 .default('only', undefined)
                 .argv;
-
 
 gulp.task('lint', function() {
     var eslint = require('gulp-eslint');
@@ -52,10 +46,7 @@ gulp.task('test', ['transpile'], function() {
     return gulp.src(config.paths.tests.unit)
         .pipe(mocha({
             ui: 'tdd',
-            reporter: config.tests.reporter,
-            reporterOptions: {
-                mochaFile: config.tests.junitOutput
-            },
+            reporter: 'spec',
             grep: args.only,
             js: require('babel-register')({
                 presets: ['es2015', 'stage-3'],
