@@ -30,6 +30,7 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-stage-3": "^6.3.13",
     "babel-register": "^6.4.3",
+    "chai": "^3.4.1",
     "del": "^2.1.0",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-babel": "^2.1.1",
@@ -41,6 +42,8 @@
     "yargs": "^3.30.0"
   },
   "dependencies": {
-    "slack-robot": "^2.0.8"
+    "lodash": "^4.0.1",
+    "require-dir": "^0.3.0",
+    "slack-robot": "^3.0.1"
   }
 }

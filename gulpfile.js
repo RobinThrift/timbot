@@ -7,7 +7,7 @@ var gulp   = require('gulp'),
             dest: './dist',
             scripts: ['src/*.js', 'src/**/*.js'],
             tests: {
-                unit: ['test/*.spec.js', 'test/**/*.spec.js', 'test/plugins/**/*.spec.js']
+                unit: ['test/*.spec.js', 'test/**/*.spec.js', 'test/commands/**/*.spec.js']
             }
         },
         tests: {

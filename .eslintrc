@@ -5,6 +5,8 @@
         "mocha": 1
     },
     "rules": {
+        "consistent-return": 0,
+        "func-names": 0,
         "comma-dangle": [2, "never"],
         "id-length": 0,
         "indent": [2, 4, {"SwitchCase": 1}],
