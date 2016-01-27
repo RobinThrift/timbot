@@ -37,7 +37,10 @@ gulp.task('scripts:transpile', function() {
     var babel = require('gulp-babel');
 
     return gulp.src(config.paths.scripts, {base: './src'})
-        .pipe(babel({presets: ['es2015']}))
+        .pipe(babel({
+            presets: ['es2015', 'stage-3'],
+            plugins: ['transform-runtime']
+        }))
         .on('error', function(err) {
             console.error(err);
         })
@@ -56,7 +59,10 @@ gulp.task('tests:unit', ['scripts:transpile'], function() {
                 mochaFile: config.tests.junitOutput
             },
             grep: args.only,
-            require: [join(__dirname, 'test/setup')]
+            js: require('babel-register')({
+                presets: ['es2015', 'stage-3'],
+                plugins: ['transform-runtime']
+            })
         }));
 });
 
