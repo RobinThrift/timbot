@@ -2,19 +2,20 @@ export function register() {
     return new Promise((resolve) => {
         resolve([
             {
-                pattern: /\/?r\/[A-Za-z0-9]+/gi,
-                handler: (req, res) => {
+                pattern: /\/?r\/[A-Za-z0-9]+/i,
+                handler: (req, res, reject) => {
                     if (req.message.type !== 'message') {
-                        return;
+                        return reject(new Error(`message not of type message, recieved ${req.message.type}`));
                     }
                     let msg = req.message.value.text;
-                    let matches = /\/?(r\/[A-Za-z0-9]+)/.exec(msg);
+                    let matches = /\/?(r\/[A-Za-z0-9]+)/i.exec(msg);
                     if (!matches) {
-                        return;
+                        return reject(new Error('no reddit link found'));
                     }
 
-                    res.text('https://reddit.com/' + matches[1]);
-                    return res.send();
+                    res({
+                        text: 'https://reddit.com/' + matches[1]
+                    });
                 }
             }
         ]);

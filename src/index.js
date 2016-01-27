@@ -16,7 +16,29 @@ function generalHandler(handler) {
             return;
         }
 
-        return handler.handler(req, res);
+        return new Promise((resolve, reject) => {
+            handler.handler(req, resolve, reject);
+        }).then((resp) => {
+            if (resp.text) {
+                res.text(resp.text);
+            }
+
+            if (resp.attachment) {
+                res.text(resp.attachment.text, resp.attachment.data);
+            }
+
+            if (resp.upload) {
+                res.text(resp.upload.name, resp.upload.data);
+            }
+
+            if (resp.reaction) {
+                res.reaction(resp.reaction);
+            }
+
+            return res.send();
+        }).catch((e) => {
+            console.error(e);
+        });
     };
 }
 

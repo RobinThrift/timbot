@@ -1,21 +1,23 @@
-import {random} from 'lodash';
+import {random, isNaN} from 'lodash';
 
 function randNumberFactory(floating) {
-    return (req, res) => {
+    return (req, resolve, reject) => {
         if (req.message.type !== 'message') {
-            return;
+            reject();
         }
 
-        let max = (floating) ? parseFloat(req.params.max) : parseInt(10, req.params.max);
-        let min = (floating) ? parseFloat(req.params.min) : parseInt(10, req.params.min);
+        let max = (floating) ? parseFloat(req.params.max) : parseInt(req.params.max, 10);
+        let min = (floating) ? parseFloat(req.params.min) : parseInt(req.params.min, 10);
 
-        if (max < min || max < 0 && min < 0) {
-            res.text('Please provide sensible arguments, you little bugger.');
+        if (max < min || max < 0 && min < 0 || isNaN(max) || isNaN(min)) {
+            resolve({
+                text: 'Please provide sensible arguments, you little bugger.'
+            });
         } else {
-            res.text(`Here is your random ${(floating) ? 'double' : 'integer'}, good sir: ` + random(min, max, false));
+            resolve({
+                text: `Here is your random ${(floating) ? 'double' : 'integer'}, good sir: ` + random(min, max, false)
+            });
         }
-
-        res.send();
     };
 }
 
