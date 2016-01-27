@@ -23,7 +23,7 @@ var args  = require('yargs')(process.argv)
                 .argv;
 
 
-gulp.task('scripts:lint', function() {
+gulp.task('lint', function() {
     var eslint = require('gulp-eslint');
     var join = require('path').join;
     return gulp.src(config.paths.scripts)
@@ -33,7 +33,7 @@ gulp.task('scripts:lint', function() {
         .pipe(eslint.formatEach('stylish'));
 });
 
-gulp.task('scripts:transpile', function() {
+gulp.task('transpile', ['lint'], function() {
     var babel = require('gulp-babel');
 
     return gulp.src(config.paths.scripts, {base: './src'})
@@ -47,9 +47,7 @@ gulp.task('scripts:transpile', function() {
         .pipe(gulp.dest(config.paths.dest));
 });
 
-gulp.task('scripts:all', ['scripts:lint', 'scripts:transpile']);
-
-gulp.task('tests:unit', ['scripts:transpile'], function() {
+gulp.task('test', ['transpile'], function() {
     var mocha = require('gulp-mocha');
     return gulp.src(config.paths.tests.unit)
         .pipe(mocha({
@@ -66,16 +64,9 @@ gulp.task('tests:unit', ['scripts:transpile'], function() {
         }));
 });
 
-gulp.task('tests:unit:watch', ['scripts:all'], function() {
-    gulp.watch(config.paths.tests.unit, ['tests:unit']);
-    gulp.watch(config.paths.scripts, ['tests:unit']);
-});
-
-
-gulp.task('test', ['tests:unit']);
-
-gulp.task('watch', function() {
-    gulp.watch(config.paths.scripts, ['scripts:all']);
+gulp.task('watch', ['test'], function() {
+    gulp.watch(config.paths.tests.unit, ['test']);
+    gulp.watch(config.paths.scripts, ['test']);
 });
 
 gulp.task('clean', function(done) {
@@ -83,5 +74,4 @@ gulp.task('clean', function(done) {
     del([config.paths.dest], done);
 });
 
-gulp.task('install', ['scripts:transpile']);
-
+gulp.task('default', ['test']);
