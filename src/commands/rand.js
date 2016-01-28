@@ -1,4 +1,4 @@
-import {random, isNaN} from 'lodash';
+import {random, isNaN, sample} from 'lodash';
 
 function randNumberFactory(floating) {
     return (req, resolve, reject) => {
@@ -31,6 +31,15 @@ export function register() {
             {
                 pattern: 'randDouble :min([0-9\.\-]+) :max([0-9\.\-]+)',
                 handler: randNumberFactory(true)
+            },
+            {
+                pattern: /randEntry [A-Za-z0-9 \-_,:@]+/i,
+                handler: (req, res, reject) => {
+                    let list = /randEntry ([A-Za-z0-9 \-_,:@]+)/.exec(req.message.value.text);
+                    res({
+                        text: sample(list[1].split(',')).trim()
+                    });
+                }
             }
         ]);
     });

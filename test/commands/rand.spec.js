@@ -73,4 +73,22 @@ suite('Timbot - Commands - Random', () => {
             done();
         }).catch(done);
     });
+
+    test('randEntry', (done) => {
+        new Promise((resolve, reject) => {
+            match('randEntry Hello World, Nothing, Lorem Ipsum', commands).handler({
+                message: {
+                    type: 'message',
+                    value: {
+                        text: 'randEntry Hello World, Nothing, Lorem Ipsum'
+                    }
+                }
+            }, resolve, reject);
+        }).then((resp) => {
+            expect(resp.text).to.satisfy((item) => {
+                return ['Hello World', 'Nothing', 'Lorem Ipsum'].indexOf(item) !== -1;
+            });
+            done();
+        }).catch(done);
+    });
 });
